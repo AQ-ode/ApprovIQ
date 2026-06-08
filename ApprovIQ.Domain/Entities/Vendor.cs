@@ -23,5 +23,4 @@ namespace ApprovIQ.Domain.Entities
         public ICollection<PurchaseOrder> PurchaseOrders { get; set; }
             = new List<PurchaseOrder>();
     }
-    //kk
 }

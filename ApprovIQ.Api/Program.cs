@@ -1,6 +1,11 @@
+using ApprovIQ.Api.Features.PurchaseOrders;
+using ApprovIQ.Api.Middleware;
+using ApprovIQ.Application.Features.PurchaseOrders.Create;
 using ApprovIQ.Domain.Interfaces;
 using ApprovIQ.Infrastructure.Persistence;
 using ApprovIQ.Infrastructure.Services;
+using FluentValidation;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +19,14 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITenantContext, TenantContext>();
 
+// MediatR
+builder.Services.AddMediatR(cfg =>
+    cfg.RegisterServicesFromAssembly(
+        typeof(CreatePOCommand).Assembly));
+
+// FluentValidation
+builder.Services.AddValidatorsFromAssemblyContaining<CreatePOCommand>();
+
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -25,10 +38,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseMiddleware<TenantResolutionMiddleware>();
 app.UseHttpsRedirection();
 
-// Test endpoint
+// Map endpoints
+app.MapCreatePO();
+
 app.MapGet("/", () => "ApprovIQ API is running!");
 
 app.Run();

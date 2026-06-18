@@ -6,12 +6,12 @@ namespace ApprovIQ.Infrastructure.Persistence;
 
 public class AppDbContext : DbContext
 {
-    private readonly Guid _tenantId;
+    private readonly ITenantContext _tenantContext;
 
     public AppDbContext(DbContextOptions<AppDbContext> options,
                         ITenantContext tenantContext) : base(options)
     {
-        _tenantId = tenantContext.TenantId;
+        _tenantContext = tenantContext;
     }
 
     // Your tables
@@ -27,13 +27,13 @@ public class AppDbContext : DbContext
 
         // Global Query Filter - Multi-tenancy magic
         modelBuilder.Entity<PurchaseOrder>()
-            .HasQueryFilter(x => x.TenantId == _tenantId && !x.IsDeleted);
+            .HasQueryFilter(x => x.TenantId == _tenantContext.TenantId && !x.IsDeleted);
 
         modelBuilder.Entity<Vendor>()
-            .HasQueryFilter(x => x.TenantId == _tenantId && !x.IsDeleted);
+            .HasQueryFilter(x => x.TenantId == _tenantContext.TenantId && !x.IsDeleted);
 
         modelBuilder.Entity<Budget>()
-            .HasQueryFilter(x => x.TenantId == _tenantId && !x.IsDeleted);
+            .HasQueryFilter(x => x.TenantId == _tenantContext.TenantId && !x.IsDeleted);
 
         modelBuilder.Entity<POLineItem>()
             .HasQueryFilter(x => !x.IsDeleted);

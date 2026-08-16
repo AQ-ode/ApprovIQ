@@ -43,6 +43,8 @@ app.UseHttpsRedirection();
 
 // Map endpoints
 app.MapCreatePO();
+app.MapApprovePO();
+app.MapRejectPO();
 
 app.MapGet("/", () => "ApprovIQ API is running!");
 

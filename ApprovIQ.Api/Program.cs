@@ -46,6 +46,7 @@ app.MapCreatePO();
 app.MapApprovePO();
 app.MapRejectPO();
 app.MapSubmitPO();
+app.MapGetPOById();
 
 app.MapGet("/", () => "ApprovIQ API is running!");
 

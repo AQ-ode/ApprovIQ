@@ -18,7 +18,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Multi-tenancy
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ITenantContext, TenantContext>();
-//check
+//checks
 // MediatR
 builder.Services.AddMediatR(cfg =>
     cfg.RegisterServicesFromAssembly(
